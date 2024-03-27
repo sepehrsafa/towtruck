@@ -82,3 +82,19 @@ async def report_accident(
         "reported_by", "assigned_to"
     )
     return accident
+
+
+# delete accident
+@router.delete("/{accident_id}", response_model=Accident, responses=responses)
+async def delete_accident(
+    accident_id: int, current_user: UserAccount = Security(get_current_user)
+):
+    """
+    Delete an accident.
+    """
+    accident = await AccidentModel.get_or_none(id=accident_id)
+    if not accident:
+        raise HTTPException(status_code=404, detail="Accident not found")
+
+    await accident.delete()
+    return accident

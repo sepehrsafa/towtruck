@@ -4,6 +4,15 @@ from tortoise import fields, models
 from enum import Enum
 
 
+class Station(AuditableModel):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=200)
+    location = fields.CharField(max_length=200)
+
+    class Meta:
+        table = "station"
+
+
 class AccidentStatus(str, Enum):
     REPORTED = "REPORTED"
     ON_THE_WAY = "ON_THE_WAY"
