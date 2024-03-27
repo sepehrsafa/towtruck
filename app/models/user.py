@@ -9,7 +9,6 @@ from app.schemas.auth import TokenResponse
 from app.services.auth import check_password, create_access_token, hash_password
 from app.utils.exception import TowTruckException
 from app.utils.validation import is_valid_email, is_valid_phone_number
-
 from .audit import AuditableModel
 from .token import UserToken
 from enum import Enum
@@ -22,6 +21,8 @@ class UserAccountType(str, Enum):
 
 class UserAccount(AuditableModel):
     uuid = fields.UUIDField(pk=True, default=uuid.uuid4)
+    station = fields.ForeignKeyField("models.Station", related_name="users", null=True)
+    is_user_on_duty = fields.BooleanField(default=False)
     username = fields.CharField(max_length=30, unique=True)
     type = fields.CharEnumField(UserAccountType)
     email = fields.CharField(max_length=150, null=True, unique=True)

@@ -27,8 +27,15 @@ class UserAccountResponse(Response):
     uuid: UUID4
     username: str
     type: UserAccountType
+    is_user_on_duty: bool
+    station_id: Optional[int] = None
     email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     date_joined: datetime.datetime
     last_login: datetime.datetime
+
+
+class AddUserToStation(BaseModel):
+    user: UUID4
+    station: int

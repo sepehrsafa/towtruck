@@ -23,6 +23,7 @@ class AccidentStatus(str, Enum):
 class Accident(AuditableModel):
     id = fields.IntField(pk=True)
     reported_by = fields.ForeignKeyField("models.UserAccount", related_name="accidents")
+    assigned_station = fields.ForeignKeyField("models.Station", related_name="accidents")
     assigned_to = fields.ForeignKeyField(
         "models.UserAccount", related_name="assigned_accidents", null=True
     )

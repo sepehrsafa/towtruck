@@ -1,7 +1,7 @@
 from .user import UserAccount, UserAccountType
 from .token import UserToken
 from .audit import AuditLog, AuditableModel
-from .accident import Accident, AccidentChat, AccidentStatus
+from .accident import Accident, AccidentChat, AccidentStatus, Station
 
 __all__ = [
     "AuditableModel",
@@ -12,4 +12,5 @@ __all__ = [
     "AccidentChat",
     "AccidentStatus",
     "UserAccountType",
+    "Station",
 ]

@@ -10,12 +10,13 @@ from starlette.responses import JSONResponse, Response
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_422_UNPROCESSABLE_ENTITY
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.routes import auth, user, accident, chat
+from app.routes import auth, user, accident, chat, station
 from app.config import tortoise_settings
 from app.utils.exception import TowTruckException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.models.user import UserAccount
+import pika
 
 
 app = FastAPI(
@@ -36,6 +37,7 @@ app.add_middleware(
 BASE_PREFIX = "/api"
 app.include_router(user.router, prefix=BASE_PREFIX + "/user")
 app.include_router(auth.router, prefix=BASE_PREFIX + "/auth")
+app.include_router(station.router, prefix=BASE_PREFIX + "/station")
 app.include_router(accident.router, prefix=BASE_PREFIX + "/accident")
 app.include_router(chat.chat_router, prefix=BASE_PREFIX + "/chat")
 
