@@ -92,9 +92,11 @@ async def report_accident(
 
     accident = await AccidentModel.get(id=accident.id).prefetch_related(
         "reported_by", "assigned_to", "assigned_station"
-    )    
+    )
 
-    get_channel().basic_publish(exchange="", routing_key=f"station_{station.id}_queue", body=f'{accident.id}')
+    get_channel().basic_publish(
+        exchange="", routing_key=f"station_{station.id}_queue", body=f"{accident.id}"
+    )
 
     await check_if_assign_is_possible(station.id)
 
@@ -139,6 +141,10 @@ async def update_accident_status(
         user = await UserAccount.get(id=accident.assigned_to_id)
         user.is_user_on_duty = False
         await user.save()
-    
+
     await check_if_assign_is_possible(accident.assigned_station_id)
+
+    accident = await AccidentModel.get(id=accident.id).prefetch_related(
+        "reported_by", "assigned_to", "assigned_station"
+    )
     return accident
