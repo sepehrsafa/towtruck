@@ -17,7 +17,7 @@ from app.services.auth.utils import get_current_user
 
 from app.utils.response import responses
 from app.utils.exception import TowTruckException
-from app.queue import channel, check_if_assign_is_possible
+from app.queue import get_channel, check_if_assign_is_possible
 
 router = APIRouter(
     tags=["Accident"],
@@ -94,7 +94,7 @@ async def report_accident(
         "reported_by", "assigned_to", "assigned_station"
     )    
 
-    channel.basic_publish(exchange="", routing_key=f"station_{station.id}_queue", body=f'{accident.id}')
+    get_channel().basic_publish(exchange="", routing_key=f"station_{station.id}_queue", body=f'{accident.id}')
 
     await check_if_assign_is_possible(station.id)
 

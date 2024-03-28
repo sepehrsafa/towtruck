@@ -12,7 +12,7 @@ from app.services.auth.utils import get_current_user
 
 from app.utils.response import responses
 from app.utils.exception import TowTruckException
-from app.queue import channel
+from app.queue import get_channel
 
 # Declare a queue (if it doesn't exist, it will be created)
 
@@ -39,7 +39,7 @@ async def create_station(
         await StationModel.all().filter(id=station.id).first().prefetch_related("users")
     )
 
-    channel.queue_declare(queue=f"station_{station.id}_queue")
+    get_channel().queue_declare(queue=f"station_{station.id}_queue")
 
     return station
 
@@ -104,6 +104,6 @@ async def delete_station(
     await station.delete()
 
     # Delete the queue
-    channel.queue_delete(queue=f"station_{station_id}_queue")
+    get_channel().queue_delete(queue=f"station_{station_id}_queue")
 
     return station

@@ -6,8 +6,12 @@ from app.models.accident import Accident
 params = pika.URLParameters(
     "amqps://mdlycema:wXVHNWrJvRez-7GSgzICeRHQpduI8s3-@toad.rmq.cloudamqp.com/mdlycema"
 )
-connection = pika.BlockingConnection(params)
-channel = connection.channel()
+
+
+def get_channel():
+    connection = pika.BlockingConnection(params)
+    channel = connection.channel()
+    return channel
 
 
 async def check_if_assign_is_possible(station_id: int):
@@ -21,7 +25,7 @@ async def check_if_assign_is_possible(station_id: int):
     if not user:
         return False
 
-    method_frame, header_frame, body = channel.basic_get(
+    method_frame, header_frame, body = get_channel().basic_get(
         queue=f"station_{station_id}_queue", auto_ack=True
     )
 
