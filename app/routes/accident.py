@@ -137,8 +137,11 @@ async def update_accident_status(
     accident.status = status.status
     await accident.save()
 
-    if status == AccidentStatus.COMPLETED and accident.assigned_to_id is not None:
-        user = await UserAccount.get(id=accident.assigned_to_id)
+    print(f"Updated accident {accident.id} status to {status.status}")
+
+    if accident.status == AccidentStatus.COMPLETED and accident.assigned_to_id is not None:
+        print("Unassigning user from accident")
+        user = await UserAccount.get(pk=accident.assigned_to_id)
         user.is_user_on_duty = False
         await user.save()
 
